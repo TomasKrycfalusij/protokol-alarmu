@@ -2,13 +2,8 @@ learn = 0
 alarm = 0
 neighbours = []
 send = 0
-
-def on_forever():
-    remote_serial = radio.received_packet(RadioPacketProperty.SERIAL_NUMBER)
-    print(remote_serial)
-    basic.pause(1000)
-forever(on_forever)
-
+cislo = []
+radio.set_transmit_serial_number(False)
 
 #MANUÁL
 # 1. Dlouhý stisk loga pro vypnutí nebo zapnutí LEARN módu
@@ -40,10 +35,17 @@ input.on_logo_event(TouchButtonEvent.PRESSED, on_logo_event_pressed)
 
 #ZAPNUTÍ ALARMU
 def on_button_pressed_a():
-    pass
+    radio.send_value("ahoj", 1)
 input.on_button_pressed(Button.A, on_button_pressed_a)
 
 #VYPNUTÍ ALARMU
 def on_button_pressed_b():
     pass
 input.on_button_pressed(Button.B, on_button_pressed_b)
+
+#PŘIJMUTÍ SIGNÁLU
+def data_received(name, value):
+    print(value)
+    remote_serial = radio.received_packet(RadioPacketProperty.SERIAL_NUMBER)
+    print(remote_serial)
+radio.on_received_value(data_received)
