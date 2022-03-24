@@ -35,17 +35,24 @@ input.on_logo_event(TouchButtonEvent.PRESSED, on_logo_event_pressed)
 
 #ZAPNUTÍ ALARMU
 def on_button_pressed_a():
-    radio.send_value("ahoj", 1)
+    radio.send_value("alarm", 1)
 input.on_button_pressed(Button.A, on_button_pressed_a)
 
 #VYPNUTÍ ALARMU
 def on_button_pressed_b():
-    pass
+    radio.send_value("alarm", 0)
 input.on_button_pressed(Button.B, on_button_pressed_b)
 
 #PŘIJMUTÍ SIGNÁLU
 def data_received(name, value):
-    print(value)
-    remote_serial = radio.received_packet(RadioPacketProperty.SERIAL_NUMBER)
-    print(remote_serial)
+    if name == "alarm" and value == 1:
+        basic.show_number(1)
+        basic.pause(200)
+        basic.clear_screen()
+    if name == "alarm" and value == 0:
+        basic.show_number(0)
+        basic.pause(200)
+        basic.clear_screen()
 radio.on_received_value(data_received)
+
+#remote_serial = radio.received_packet(RadioPacketProperty.SERIAL_NUMBER)

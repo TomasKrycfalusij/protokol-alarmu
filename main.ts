@@ -35,15 +35,24 @@ input.onLogoEvent(TouchButtonEvent.Pressed, function on_logo_event_pressed() {
 })
 // ZAPNUTÍ ALARMU
 input.onButtonPressed(Button.A, function on_button_pressed_a() {
-    radio.sendValue("ahoj", 1)
+    radio.sendValue("alarm", 1)
 })
 // VYPNUTÍ ALARMU
 input.onButtonPressed(Button.B, function on_button_pressed_b() {
-    
+    radio.sendValue("alarm", 0)
 })
 // PŘIJMUTÍ SIGNÁLU
 radio.onReceivedValue(function data_received(name: string, value: number) {
-    console.log(value)
-    let remote_serial = radio.receivedPacket(RadioPacketProperty.SerialNumber)
-    console.log(remote_serial)
+    if (name == "alarm" && value == 1) {
+        basic.showNumber(1)
+        basic.pause(200)
+        basic.clearScreen()
+    }
+    
+    if (name == "alarm" && value == 0) {
+        basic.showNumber(0)
+        basic.pause(200)
+        basic.clearScreen()
+    }
+    
 })
